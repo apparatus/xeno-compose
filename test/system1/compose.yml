@@ -1,0 +1,14 @@
+frontend:
+  build: ./frontend/
+  container_name: frontend
+  environment:
+    - PROXY_PORT=3000
+    - SERVICE_HOST=0.0.0.0 
+    - SERVICE_PORT=3001 
+service1:
+  build: ./service1/
+  container_name: service1
+service2:
+  build: ../service2/
+  container_name: service2
+  command: node index.js

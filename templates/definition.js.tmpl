@@ -1,0 +1,18 @@
+exports.<%=containerName%> = {
+  dev: {
+    type: 'process',
+    execute: {
+      process: '<%=execute%>'
+    }
+  },
+  shared$: {
+    path: '<%=path%>',
+    type: 'docker',
+    proxyPort: '<%=proxyPort%>',
+    servicePort: '<%=servicePort%>',
+    execute: {
+      exec: '<%=execute%>',
+    }
+  }
+};
+
