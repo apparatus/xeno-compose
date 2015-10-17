@@ -30,10 +30,10 @@ with documentation, examples, extra testing, or new features please get in touch
 Copyright the microbial-lab team 2015, Licensed under [MIT][].
 
 [microbial-lab team]: https://github.com/microbial-lab
-[travis-badge]: https://travis-ci.org/microbial-lab/xeno.svg
-[travis-url]: https://travis-ci.org/microbial-lab/xeno
+[travis-badge]: https://travis-ci.org/microbial-lab/xeno-compose.svg
+[travis-url]: https://travis-ci.org/microbial-lab/xeno-compose
 [gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
 [gitter-url]: https://gitter.im/microbial-lab
 
 [MIT]: ./LICENSE
-[github issue]: https://github.com/microbial-lab/xeno/issues/new
+[github issue]: https://github.com/microbial-lab/xeno-compose/issues/new
