@@ -1,4 +1,5 @@
 # xeno-compose
+[![Build Status][travis-badge]][travis-url]
 [![Gitter][gitter-badge]][gitter-url]
 
 Converts docker-compose and related Dockerfiles to js.
