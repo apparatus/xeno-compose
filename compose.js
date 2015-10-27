@@ -41,6 +41,18 @@ module.exports = function() {
                          proxyPort: 'auto'};
      var portRe = /PROXY_PORT=(.*)/g;
      var dir;
+     var env = {};
+
+     if (cdef.environment) {
+       _.each(cdef.environment, function(el) {
+         var s = el.split('=');
+         env[s[0]] = s[1];
+       });
+       templateArgs.environment = JSON.stringify(env, null, 2);
+     }
+     else {
+       templateArgs.environment = '[]';
+     }
 
     if (cdef.build) {
       dir = path.dirname(yamlPath);
