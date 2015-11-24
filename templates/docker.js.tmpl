@@ -1,6 +1,6 @@
 exports.<%=containerName%> = {
   dev: {
-    type: 'process',
+    type: 'docker',
     execute: {
       process: '<%=execute%>'
     }
@@ -12,6 +12,7 @@ exports.<%=containerName%> = {
     servicePort: [<%=servicePort%>],
     buildScript: '<%=build%>',
     execute: {
+      image: '<%=image%>',
       exec: '<%=execute%>',
       environment: <%=environment%>
     }

@@ -23,9 +23,8 @@ test('compose test', function(t) {
 
   compose.translate('test', '12345', 'dev', __dirname + '/system1/compose.yml', function(err, system) {
     t.equal(err, null);
-    console.log(system);
     eval(system.systemDef);
-    t.equal(exports.topology.dev.root[0], 'frontend');
+    t.equal(exports.topology.dev.root[0], 'redis');
     t.equal(1, 1);
   });
 });
