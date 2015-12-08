@@ -17,6 +17,7 @@ service1:
   container_name: service1
   ports:
     - '4001'
+  environment: {SERVICE_HOST: '0.0.0.0'}
 service2:
   build: ../service2/
   container_name: service2

@@ -48,10 +48,17 @@ module.exports = function() {
      var result;
 
      if (cdef.environment) {
-       _.each(cdef.environment, function(el) {
-         var s = el.split('=');
-         env[s[0]] = s[1];
-       });
+       if (_.isArray(cdef.environment)) {
+         _.each(cdef.environment, function(el) {
+           var s = el.split('=');
+           env[s[0]] = s[1];
+         });
+       }
+       else {
+         _.each(_.keys(cdef.environment), function(key) {
+           env[key] = cdef.environment[key];
+         });
+       }
        templateArgs.environment = JSON.stringify(env, null, 2);
      }
      else {
@@ -90,6 +97,11 @@ module.exports = function() {
           var s = el.split(':');
           env[s[0]] = s[1];
           dockerCommand += ' -p ' + el;
+        });
+      }
+      if (env) {
+        _.each(_.keys(env), function(key) {
+          dockerCommand += ' -e ' + key + '=' + env[key];
         });
       }
       dockerCommand += ' ' + cdef.image;
