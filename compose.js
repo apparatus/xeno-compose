@@ -190,6 +190,29 @@ module.exports = function() {
 
 
 
+  var excludeKey = function(key) {
+    var excludedKeys = ['cpu_shares', 
+                        'cpu_quota',
+                        'cpuset',
+                        'user',
+                        'working_dir',
+                        'domainname',
+                        'hostname',
+                        'ipc',
+                        'mac_address',
+                        'mem_limit',
+                        'memswap_limit',
+                        'privileged',
+                        'restart',
+                        'read_only',
+                        'stdin_open',
+                        'tty',
+                        'env_file'];
+    return _.find(excludedKeys, function(exKey) { return exKey === key; });
+  };
+
+
+
   /**
    * translates from docker-compose syntax to nscale syntax.
    */
@@ -210,10 +233,12 @@ module.exports = function() {
 
     containers = fs.readFileSync(__dirname + '/templates/root.js.tmpl');
     _.each(_.keys(doc), function(key) {
-      command = readCommandFromDockerfile(doc[key], yamlPath);
-      buildScript = interpolateBuildScriptFromDockerfile(doc[key], yamlPath);
-      containers += generateContainer(key, command, buildScript, yamlPath, doc[key]);
-      containerNameList.push(key);
+      if (!excludeKey(key)) {
+        command = readCommandFromDockerfile(doc[key], yamlPath);
+        buildScript = interpolateBuildScriptFromDockerfile(doc[key], yamlPath);
+        containers += generateContainer(key, command, buildScript, yamlPath, doc[key]);
+        containerNameList.push(key);
+      }
     });
     systemDef = generateSystem({name: name, id: id, env: env, path: path.dirname(yamlPath), containerList: JSON.stringify(containerNameList)});
 
