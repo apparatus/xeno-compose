@@ -5,11 +5,7 @@ redis:
 frontend:
   build: ./frontend/
   container_name: frontend
-  environment:
-    - SERVICE_HOST=0.0.0.0 
-frontend:
-  build: ./frontend/
-  container_name: frontend
+  env_file: './env'
   environment:
     - SERVICE_HOST=0.0.0.0 
 service1:
@@ -18,10 +14,12 @@ service1:
   ports:
     - '4001'
   environment: {SERVICE_HOST: '0.0.0.0'}
+  env_file: './env'
 service2:
   build: ../service2/
   container_name: service2
   command: node index.js
+  env_file: './env'
   ports:
     - '1234:1234'
     - '5678:5678'
