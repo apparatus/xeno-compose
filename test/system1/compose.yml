@@ -1,7 +1,17 @@
+redisdata:
+  image: redis
+  container_name: redisdata
+  command: /bin/true
+  volumes:
+    - /var/db/redis
+    - ./data:/data
+    - ../parent:/folder
 redis:
   image: redis
   ports:
     - 6379:6379
+  volumes_from:
+    - redisdata
 frontend:
   build: ./frontend/
   container_name: frontend
