@@ -92,6 +92,11 @@ module.exports = function() {
 
     if (cdef.image) {
       var dockerCommand = 'docker run ';
+
+      if (cdef.container_name) {
+        dockerCommand += '--name ' + cdef.container_name;
+      }
+
       if (cdef.ports) {
         _.each(cdef.ports, function(el) {
           var s = el.split(':');
@@ -99,12 +104,36 @@ module.exports = function() {
           dockerCommand += ' -p ' + el;
         });
       }
+
+      if (cdef.volumes) {
+        _.each(cdef.volumes, function(el) {
+          var v = el.split(':');
+          if (v.length > 1) {
+            var resolved = path.resolve(path.dirname(yamlPath), v[0]);
+            var relative = path.relative(process.cwd(), resolved);
+            v[0] = /^\./.test(relative) ? relative : './' + relative;
+          }
+          dockerCommand += ' -v ' + v.join(':');
+        });
+      }
+
+      if (cdef.volumes_from) {
+        _.each(cdef.volumes_from, function(el) {
+          dockerCommand += ' --volumes-from ' + el;
+        });
+      }
+
       if (env) {
         _.each(_.keys(env), function(key) {
           dockerCommand += ' -e ' + key + '=' + env[key];
         });
       }
       dockerCommand += ' ' + cdef.image;
+
+      if (cdef.command) {
+        dockerCommand += ' ' + cdef.command;
+      }
+
       templateArgs.execute = dockerCommand;
       templateArgs.image = cdef.image;
       result = dockerTemplate(templateArgs);
