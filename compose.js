@@ -37,12 +37,17 @@ module.exports = function() {
      var dockerTemplate = _.template(dockerTemplateString);
      var servicePorts = [];
      var proxyPorts = [];
-     var templateArgs = {containerName: name,
-                         execute: command,
-                         build: buildScript,
-                         path: '',
-                         servicePort: '\'auto\'',
-                         proxyPort: '\'auto\''};
+     var templateArgs = {
+       yamlPath: yamlPath,
+       source: JSON.stringify(cdef, null, 2),
+       containerName: name,
+       execute: command,
+       build: buildScript,
+       path: '',
+       servicePort: '\'auto\'',
+       proxyPort: '\'auto\''
+     };
+
      var dir;
      var env = {};
      var result;
@@ -108,10 +113,10 @@ module.exports = function() {
       if (cdef.volumes) {
         _.each(cdef.volumes, function(el) {
           var v = el.split(':');
-          if (v.length > 1) {
+          if ((v.length > 1) && isRelative(v[0])) {
             var resolved = path.resolve(path.dirname(yamlPath), v[0]);
             var relative = path.relative(process.cwd(), resolved);
-            v[0] = /^\./.test(relative) ? relative : './' + relative;
+            v[0] = isRelative(relative) ? relative : './' + relative;
           }
           dockerCommand += ' -v ' + v.join(':');
         });
@@ -143,7 +148,6 @@ module.exports = function() {
     }
     return result;
   };
-
 
 
   var interpretArrayCommand = function(cmdArrStr) {
@@ -281,3 +285,6 @@ module.exports = function() {
 };
  
 
+function isRelative(fn) {
+  return /^\.\.?\//.test(fn);
+}
