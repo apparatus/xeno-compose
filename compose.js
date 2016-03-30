@@ -157,39 +157,6 @@ module.exports = function() {
     return cmdArrStr.split(',').join(' ');
   };
 
-
-
-  var interpolateBuildScriptFromDockerfile = function(cdef, yamlPath) {
-    var dir;
-    var docker;
-    var lines;
-    var match;
-    var script = 'echo NO BUILD SCRIPT!';
-    var re = /RUN (.*)/g;
-
-    if (cdef.build) {
-      dir = path.dirname(yamlPath);
-      dir += '/' + cdef.build;
-      try {
-        if (fs.existsSync(dir + '/Dockerfile', 'utf8')) {
-          docker = fs.readFileSync(dir + '/Dockerfile', 'utf8');
-          lines = docker.split('\n');
-          if (lines.length > 0) { script = ''; }
-          _.each(lines, function(line) {
-            if (null !== (match = re.exec(line))) {
-              script += match[1] + '; ';
-            }
-          });
-        }
-      }
-      catch (e) {
-      }
-    }
-    return script;
-  };
-
-
-
   var readCommandFromDockerfile = function(cdef, yamlPath) {
     var dir;
     var docker;
@@ -268,7 +235,7 @@ module.exports = function() {
     _.each(_.keys(doc), function(key) {
       if (!excludeKey(key)) {
         command = readCommandFromDockerfile(doc[key], yamlPath);
-        buildScript = interpolateBuildScriptFromDockerfile(doc[key], yamlPath);
+        buildScript = 'echo NO BUILD SCRIPT!';
         containers += generateContainer(key, command, buildScript, yamlPath, doc[key]);
         containerNameList.push(key);
       }
