@@ -114,9 +114,7 @@ module.exports = function() {
         _.each(cdef.volumes, function(el) {
           var v = el.split(':');
           if ((v.length > 1) && isRelative(v[0])) {
-            var resolved = path.resolve(path.dirname(yamlPath), v[0]);
-            var relative = path.relative(process.cwd(), resolved);
-            v[0] = isRelative(relative) ? relative : './' + relative;
+            v[0] = path.resolve(path.dirname(yamlPath), v[0]);
           }
           dockerCommand += ' -v ' + v.join(':');
         });
